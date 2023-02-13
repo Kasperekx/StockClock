@@ -1,7 +1,5 @@
 ## Stock Clock 💸
-Do you wanna know what is going on the world? 
-
-Are you interested in stock market? 
+Do you wanna know what is going on the world?  Are you interested in stock market? 
 
 If yes, Great!
 
