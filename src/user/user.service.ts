@@ -45,4 +45,12 @@ export class UserService {
   ): Promise<boolean> {
     return await argon2.verify(hashedPassword, password);
   }
+
+  async getUserById(id: string): Promise<UserEntity | null> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
 }

@@ -1,7 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Session } from '@nestjs/common';
 import { UserEntity } from '../database/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { ValidateUserDto } from './network/dtos/ValidateUser.dto';
+import { CreateUserDto } from '../user/network/dtos/CreateUser.dto';
+import { LoginUserDto } from './network/dtos/LoginUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,12 +25,16 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
   }
 
-  async login(user: UserEntity): Promise<UserEntity> {
+  async register(user: CreateUserDto): Promise<UserEntity> {
     try {
-      console.log('Logged in');
-      return await user;
+      return await this.userService.createUser(user);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async login(userDTO: LoginUserDto): Promise<UserEntity> {
+    const user = await this.userService.findUserByEmail(userDTO.email);
+    return user;
   }
 }
