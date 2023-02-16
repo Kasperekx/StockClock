@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 
 import { ApiBody } from '@nestjs/swagger';
 import { CreateUserDto } from '../user/network/dtos/CreateUser.dto';
-import { JoiValidationPipe } from '../utils/pipes/joi-validation.pipe';
+import { JoiValidationPipe } from '../../utils/pipes/joi-validation.pipe';
 import { UserSchema } from '../user/network/schemas/createUserSchema';
 import { UserEntity } from '../database/entities/user.entity';
 import { AuthenticatedGuard, LocalAuthGuard } from './guards/local.guard';

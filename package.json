@@ -29,6 +29,7 @@
     "@nestjs/swagger": "^6.2.1",
     "@nestjs/typeorm": "^9.0.1",
     "argon2": "^0.30.3",
+    "connect-typeorm": "^2.0.0",
     "express-session": "^1.17.3",
     "joi": "^17.7.1",
     "passport": "^0.6.0",

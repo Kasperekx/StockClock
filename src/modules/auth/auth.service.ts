@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Session } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../database/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { ValidateUserDto } from './network/dtos/ValidateUser.dto';
@@ -29,12 +29,11 @@ export class AuthService {
     try {
       return await this.userService.createUser(user);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
   async login(userDTO: LoginUserDto): Promise<UserEntity> {
-    const user = await this.userService.findUserByEmail(userDTO.email);
-    return user;
+    return await this.userService.findUserByEmail(userDTO.email);
   }
 }
