@@ -53,4 +53,16 @@ export class UserService {
     }
     return user;
   }
+
+  async confirmEmail(email: string): Promise<boolean> {
+    await this.userRepository.update(
+      {
+        email,
+      },
+      {
+        isEmailConfirmed: true,
+      },
+    );
+    return true;
+  }
 }

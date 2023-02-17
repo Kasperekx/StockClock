@@ -28,4 +28,7 @@ export class UserEntity {
 
   @Column({ default: false })
   isActive: boolean;
+
+  @Column({ default: false })
+  isEmailConfirmed: boolean;
 }

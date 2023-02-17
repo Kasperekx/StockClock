@@ -4,10 +4,14 @@ import { UserService } from '../user/user.service';
 import { ValidateUserDto } from './network/dtos/ValidateUser.dto';
 import { CreateUserDto } from '../user/network/dtos/CreateUser.dto';
 import { LoginUserDto } from './network/dtos/LoginUser.dto';
+import { EmailVerificationService } from '../email-verification/email-verification.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly emailVerificationService: EmailVerificationService,
+  ) {}
 
   async validateUser({
     email,
@@ -25,9 +29,11 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
   }
 
-  async register(user: CreateUserDto): Promise<UserEntity> {
+  async register(payload: CreateUserDto): Promise<UserEntity> {
     try {
-      return await this.userService.createUser(user);
+      const newUser = await this.userService.createUser(payload);
+      await this.emailVerificationService.sendEmailVerification(payload.email);
+      return newUser;
     } catch (error) {
       throw new Error(error);
     }
