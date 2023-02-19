@@ -74,22 +74,12 @@ export class UserService {
     if (await this.comparePassword(password, user.password)) {
       throw new Error('New password cannot be same as old password');
     }
-    // const now = Date.now();
-    // const timeSinceLastPasswordChange = now - user.updatedAt.getTime();
-    // const tenMinutes = 10 * 60 * 1000;
-    // if (timeSinceLastPasswordChange < tenMinutes) {
-    //   throw new Error(
-    //     'You can only change your password once every 10 minutes',
-    //   );
-    // }
     const hashedPass = await argon2.hash(password);
-    // user.updatedAt = new Date();
     await this.userRepository.update(
       {
         id,
       },
       {
-        // updatedAt: user.updatedAt,
         password: hashedPass,
       },
     );
