@@ -8,11 +8,11 @@ export class UserEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ nullable: true })
-  userName: string;
+  displayName: string;
 
   @Column({ nullable: true })
   firstName: string;

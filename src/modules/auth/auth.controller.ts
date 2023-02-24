@@ -17,24 +17,38 @@ import { UserSchema } from '../user/network/schemas/createUserSchema';
 import { UserEntity } from '../database/entities/user.entity';
 import { AuthenticatedGuard, LocalAuthGuard } from './guards/local.guard';
 import { LoginUserDto } from './network/dtos/LoginUser.dto';
+import { GoogleGuard } from './guards/google.guard';
+import { EmailVerificationGuard } from '../email-verification/guards/email.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @UseGuards(EmailVerificationGuard)
   @UseGuards(LocalAuthGuard)
   @UsePipes(new JoiValidationPipe(UserSchema))
   @ApiBody({ type: LoginUserDto })
   @Post('/login')
-  async login(@Body() userDTO: LoginUserDto): Promise<UserEntity> {
-    const user = await this.authService.login(userDTO);
-    return user;
+  login(@Body() payload: LoginUserDto): Promise<UserEntity> {
+    return this.authService.login(payload);
   }
   @Post('/register')
   @ApiBody({ type: CreateUserDto })
   @UsePipes(new JoiValidationPipe(UserSchema))
   register(@Body() user: CreateUserDto): Promise<UserEntity> {
     return this.authService.register(user);
+  }
+
+  @Get('/google/login')
+  @UseGuards(GoogleGuard)
+  async googleAuth(@Request() req) {
+    return await req.user;
+  }
+
+  @Get('/google/redirect')
+  @UseGuards(GoogleGuard)
+  async googleAuthRedirect(@Request() req) {
+    return await req.user;
   }
 
   @Get('/session')

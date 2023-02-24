@@ -13,6 +13,10 @@ export class UserController {
     return this.userService.getUserById(id);
   }
 
+  @Get('')
+  getAllUsers() {
+    return this.userService.getAllUsers();
+  }
   @Throttle(2, 60)
   @Put(':id/password')
   changePassword(

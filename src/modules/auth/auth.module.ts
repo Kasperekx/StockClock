@@ -7,6 +7,8 @@ import { LocalStrategy } from './strategy/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { SessionSerializer } from '../../utils/serializers/SessionSerializer';
 import { EmailVerificationModule } from '../email-verification/email-verification.module';
+import { GoogleStrategy } from './strategy/google.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { EmailVerificationModule } from '../email-verification/email-verificatio
     EmailVerificationModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, SessionSerializer],
+  providers: [AuthService, LocalStrategy, SessionSerializer, GoogleStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

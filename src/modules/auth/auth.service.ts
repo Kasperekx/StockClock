@@ -5,11 +5,12 @@ import { ValidateUserDto } from './network/dtos/ValidateUser.dto';
 import { CreateUserDto } from '../user/network/dtos/CreateUser.dto';
 import { LoginUserDto } from './network/dtos/LoginUser.dto';
 import { EmailVerificationService } from '../email-verification/email-verification.service';
+import { GoogleUserDTO } from './network/dtos/GoogleUser.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    private userService: UserService,
     private readonly emailVerificationService: EmailVerificationService,
   ) {}
 
@@ -27,6 +28,20 @@ export class AuthService {
     if (isPasswordMatching) return user;
     else
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+  }
+
+  async validateGoogleUser(googleUserDTO: GoogleUserDTO): Promise<UserEntity> {
+    const user = await this.userService.findUserByEmail(googleUserDTO.email);
+    if (!user) {
+      const newUser = await this.userService.createGoogleUser(
+        googleUserDTO.email,
+      );
+      console.log('Created new user' + newUser);
+      return newUser;
+    }
+    console.log('Logged' + user.email);
+    console.log(user.isEmailConfirmed);
+    await this.login(user);
   }
 
   async register(payload: CreateUserDto): Promise<UserEntity> {
